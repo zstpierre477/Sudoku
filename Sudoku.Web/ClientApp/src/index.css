@@ -1,0 +1,143 @@
+@media (max-width: 767px) {
+    /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */
+    body {
+        padding-top: 50px;
+    }
+
+    table {
+        border-collapse: collapse;
+        font-size: large;
+        text-align: center;
+        font-weight: bold;
+        margin: auto;
+        border-collapse: collapse;
+    }
+
+    td {
+        height: 40px;
+        width: 40px;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    h4 {
+        text-align: center;
+    }
+
+    #numberButton {
+        text-align: center;
+        font-weight: bold;
+        border: 1px solid black;
+        width: 40px;
+        height: 40px;
+    }
+
+    #numberButtonDivs {
+        text-align: center;
+        margin: auto;
+    }
+
+    #numberButtonDiv {
+        margin-top: 10px;
+    }
+
+    #start {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #solve-check {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #solveButton {
+        font-weight: bold;
+        border: 1px solid black;
+        width: 60px;
+        height: 40px;
+    }
+
+    #checkButton {
+        font-weight: bold;
+        border: 1px solid black;
+        width: 60px;
+        height: 40px;
+    }
+
+    #startButton {
+        font-weight: bold;
+        font-size: larger;
+        border: 1px solid black;
+        width: 100px;
+        height: 50px;
+    }
+
+    #cellBordering0 {
+        border-left: 4px solid black;
+        border-top: 4px solid black;
+        border-bottom: 2px solid black;
+        border-right: 2px solid black;
+    }
+
+    #cellBordering1 {
+        border-left: 2px solid black;
+        border-top: 4px solid black;
+        border-bottom: 2px solid black;
+        border-right: 2px solid black;
+    }
+
+    #cellBordering2 {
+        border-left: 2px solid black;
+        border-top: 4px solid black;
+        border-bottom: 2px solid black;
+        border-right: 4px solid black;
+    }
+
+    #cellBordering3 {
+        border-left: 4px solid black;
+        border-top: 2px solid black;
+        border-bottom: 2px solid black;
+        border-right: 2px solid black;
+    }
+
+    #cellBordering4 {
+        border-left: 2px solid black;
+        border-top: 2px solid black;
+        border-bottom: 2px solid black;
+        border-right: 2px solid black;
+    }
+
+    #cellBordering5 {
+        border-left: 2px solid black;
+        border-top: 2px solid black;
+        border-bottom: 2px solid black;
+        border-right: 4px solid black;
+    }
+
+
+    #cellBordering6 {
+        border-left: 4px solid black;
+        border-top: 2px solid black;
+        border-bottom: 4px solid black;
+        border-right: 2px solid black;
+    }
+
+    #cellBordering7 {
+        border-left: 2px solid black;
+        border-top: 2px solid black;
+        border-bottom: 4px solid black;
+        border-right: 2px solid black;
+    }
+
+    #cellBordering8 {
+        border-left: 2px solid black;
+        border-top: 2px solid black;
+        border-bottom: 4px solid black;
+        border-right: 4px solid black;
+    }
+}
