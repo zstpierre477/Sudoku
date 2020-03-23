@@ -1,10 +1,37 @@
-using System;
-
 namespace Sudoku.Functions
 {
     public class SudokuGrid
     {
         private SudokuCell[][] Grid { get; set; }
+
+        public SudokuGrid()
+        {
+            Grid = new SudokuCell[9][];
+            for (var i = 0; i < 9; i++)
+            {
+                Grid[i] = new SudokuCell[9];   
+                for (var j = 0; j < 9; j++)
+                {
+                    Grid[i][j] = new SudokuCell();
+                }
+            }
+        }
+
+        public SudokuGrid(SudokuGrid sudokuGrid)
+            : this(sudokuGrid.Grid) { }
+
+        public SudokuGrid(SudokuCell[][] grid)
+        {
+            Grid = new SudokuCell[9][];
+            for (var i = 0; i < 9; i++)
+            {
+                Grid[i] = new SudokuCell[9];
+                for (var j = 0; j < 9; j++)
+                {
+                    Grid[i][j] = new SudokuCell(grid[i][j].Value, grid[i][j].StartedInGrid);
+                }
+            }
+        }
 
         public SudokuCell GetGridValue(int row, int column) {
             return Grid[row][column];
@@ -40,6 +67,11 @@ namespace Sudoku.Functions
                 }
             }
             return col;
+        }
+
+        public SudokuCell[][] GetGrid()
+        {
+            return Grid;
         }
     }
 }

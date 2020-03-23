@@ -1,10 +1,13 @@
-﻿class Check extends React.Component {
+﻿import React from 'react';
+import CheckPopup from './CheckPopup';
+
+class Check extends React.Component {
     constructor(props) {
         super(props);
         this.handleClick = this.handleClick.bind(this);
         this.state = {
             popup: new CheckPopup(),
-            cells: props ?.cells ?? []
+            cells: props.cells
         }
     }
 
@@ -32,3 +35,5 @@
         return (<button id="checkButton" onClick={this.handleClick}>Check</button>);
     }
 }
+
+export default Check;

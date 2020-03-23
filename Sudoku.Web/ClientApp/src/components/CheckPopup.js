@@ -1,4 +1,6 @@
-﻿class CheckPopup extends React.Component {
+﻿import React from 'react';
+
+class CheckPopup extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -38,3 +40,5 @@
         }
     }
 }
+
+export default CheckPopup;

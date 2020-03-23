@@ -3,8 +3,8 @@ import 'bootstrap/dist/css/bootstrap-theme.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import * as serviceWorker from './serviceWorker';
-import SudokuGame from 'SudokuGame';
+import registerServiceWorker from './registerServiceWorker';
+import SudokuGame from './components/SudokuGame';
 
 class Start extends React.Component {
     constructor(props) {
@@ -33,4 +33,4 @@ class Start extends React.Component {
 }
 
 ReactDOM.render(<Start />, document.getElementById('root'));
-serviceWorker.unregister();
+registerServiceWorker();

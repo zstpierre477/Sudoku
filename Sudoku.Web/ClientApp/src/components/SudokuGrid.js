@@ -1,4 +1,7 @@
-﻿class SudokuGrid extends React.Component {
+﻿import React from 'react';
+import Cell from './Cell';
+
+class SudokuGrid extends React.Component {
     constructor(props) {
         super(props);
         this.renderCells = this.renderCells.bind(this);
@@ -9,20 +12,12 @@
     }
 
     createCells() {
-        let cells = []
-        for (var i = 0; i < 81; i++) {
-            cells.push(new Cell());
-        }
-        return cells;
-    }
-
-    componentDidMount() {
-        fetch('http://localhost:44388/create-grid')
-            .then(res => res.json())
-            .then((data) => {
-                this.setState({ cells: data })
-            })
-            .catch(console.log)
+        let data = fetch('http://localhost:44388/create-grid');
+        let json = data.then(response => response.json());
+        let done = json.then(cells => this.setState({ cells: cells }));
+        let more = done.catch(error => {
+                // handle error
+            });
     }
 
     renderCells() {
@@ -47,3 +42,5 @@
         return (this.renderCells());
     }
 }
+
+export default SudokuGrid;

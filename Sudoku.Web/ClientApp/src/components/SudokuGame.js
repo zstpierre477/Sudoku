@@ -1,4 +1,11 @@
-﻿class SudokuGame extends React.Component {
+﻿import React from 'react';
+import Timer from './Timer';
+import Solve from './Solve';
+import Check from './Check';
+import NumberButton from './NumberButton';
+import SudokuGrid from './SudokuGrid';
+
+class SudokuGame extends React.Component {
     constructor(props) {
         super(props);
         this.createNumberButtons = this.createNumberButtons.bind(this);
@@ -6,16 +13,11 @@
         this.state = {
             sudokuGrid: new SudokuGrid(),
             timer: new Timer(0),
-            numberButtons: this.createNumberButtons(),
-            solve: new Solve(),
-            check: new Check()
+            numberButtons: this.createNumberButtons()
         };
-    }
-
-    componentDidMount() {
         this.setState({
-            solve: new Solve(this.sudokuGrid.cells),
-            check: new Check(this.sudokuGrid.cells)
+            solve: new Solve(this.state.sudokuGrid.state.cells),
+            check: new Check(this.state.sudokuGrid.state.cells)
         });
     }
 
@@ -23,7 +25,7 @@
         let buttons = []
         for (var i = 0; i < 3; i++) {
             for (var j = 0; j < 3; j++) {
-                buttons.push(<NumberButton value={3 * i + j + 1} />)
+                buttons.push(new NumberButton(3*i+j+1))
             }
         }
         return buttons
@@ -34,7 +36,7 @@
         for (var i = 0; i < 3; i++) {
             let columns = []
             for (var j = 0; j < 3; j++) {
-                columns.push(this.state.numberButtons[3 * i + j])
+                columns.push(this.state.numberButtons[3*i+j])
             }
             rows.push(<div id="numberButtonDivs">{columns}</div>)
         }
@@ -57,3 +59,5 @@
         );
     }
 }
+
+export default SudokuGame;

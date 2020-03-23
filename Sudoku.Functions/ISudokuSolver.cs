@@ -2,7 +2,8 @@
 {
     public interface ISudokuSolver
     {
-        SudokuGrid Solve(SudokuGrid sudokuGrid);
+        SolvedSudokuGrid Solve(SudokuGrid sudokuGrid);
         bool IsSolved(SudokuGrid sudokuGrid);
+        bool IsValidMove(int row, int column, int value, SudokuGrid grid);
     }
 }

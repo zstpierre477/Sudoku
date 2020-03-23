@@ -1,64 +1,91 @@
-using System;
 using System.Linq;
 
 namespace Sudoku.Functions
 {
     public class SudokuSolver : ISudokuSolver
     {
-        public SudokuGrid Solve(SudokuGrid sudokuGrid) {
-            for (var row = 0; row < 9; row++) {
-                for (var column = 0; column < 9; column++) {
-                    var gridValue = sudokuGrid.GetGridValue(row, column);
-                    if (gridValue.StartedInGrid == false) {
+        public SolvedSudokuGrid Solve(SudokuGrid sudokuGrid) {
+            var solves = 0;
+            var currentGrid = new SudokuGrid(sudokuGrid);
+            var solvedGrid = new SudokuGrid();
+            for (var row = 0; row < 9; row++)
+            {
+                for (var column = 0; column < 9; column++)
+                {
+                    var gridValue = currentGrid.GetGridValue(row, column);
+                    if (gridValue.StartedInGrid == false)
+                    {
                         var value = gridValue.Value;
                         var changed = false;
-                        while (value < 9) {
-                            if (IsValidMove(row, column, value+1, sudokuGrid)) {
-                                sudokuGrid.SetGridValue(row, column, value+1);
-                                changed = true;
-                                break;
+                        while (value < 9)
+                        {
+                            if (IsValidMove(row, column, value + 1, currentGrid))
+                            {
+                                currentGrid.SetGridValue(row, column, value + 1);                              
+                                if (row == 8 && column == 8)
+                                {
+                                    solvedGrid = new SudokuGrid(currentGrid);
+                                    solves++;
+                                    if (solves > 1)
+                                    {
+                                        return new SolvedSudokuGrid(solvedGrid, solves == 1, solves > 0);
+                                    }
+                                    else
+                                    {
+                                        currentGrid.SetGridValue(row, column, 0);
+                                    }
+                                }
+                                else
+                                {
+                                    changed = true;
+                                    break;
+                                }
                             }
                             value++;
                         }
-                        if (changed == false) {
-                            sudokuGrid.SetGridValue(row, column, 0);
-                            do {
-                                if (column != 0) {
+                        if (changed == false)
+                        {
+                            currentGrid.SetGridValue(row, column, 0);
+                            do
+                            {
+                                if (column != 0)
+                                {
                                     column--;
                                 }
-                                else {
-                                    if (row != 0) {
+                                else
+                                {
+                                    if (row != 0)
+                                    {
                                         row--;
                                         column = 8;
-                                    }        
-                                    else {
-                                        throw new InvalidOperationException("Sudoku Grid was unsolvable.");
-                                    }          
+                                    }
+                                    else
+                                    {
+                                        return new SolvedSudokuGrid(solvedGrid, solves == 1, solves > 0);
+                                    }
                                 }
-                            } while (sudokuGrid.GetGridValue(row,column).StartedInGrid);
-                            if (column != 0) {
-                                    column--;
+                            } while (currentGrid.GetGridValue(row, column).StartedInGrid);
+                            if (column != 0)
+                            {
+                                column--;
+                            }
+                            else
+                            {
+                                if (row != 0)
+                                {
+                                    row--;
+                                    column = 8;
                                 }
-                                else {
-                                    if (row != 0) {
-                                        row--;
-                                        column = 8;
-                                    }        
-                                    else {
-                                        throw new InvalidOperationException("Sudoku Grid was unsolvable.");
-                                    }          
+                                else
+                                {
+                                    return new SolvedSudokuGrid(solvedGrid, solves == 1, solves > 0);
                                 }
-                        }                       
-                    }               
+                            }
+                        }
+                    }
                 }
             }
-
-            if (IsSolved(sudokuGrid)) {
-                return sudokuGrid;
-            }
-            else {
-                throw new InvalidOperationException("Sudoku Grid was unsolvable.");
-            }
+            return new SolvedSudokuGrid(solvedGrid, solves == 1, solves > 0);
         }
 
         public bool IsSolved (SudokuGrid sudokuGrid) {
@@ -87,7 +114,7 @@ namespace Sudoku.Functions
             return true;
         }
 
-        private bool IsValidMove(int row, int column, int value, SudokuGrid sudokuGrid) {         
+        public bool IsValidMove(int row, int column, int value, SudokuGrid sudokuGrid) {         
             for (var i = 0; i < 9; i++) {
                 if (i != row && sudokuGrid.GetGridValue(i, column).Value == value) {
                     return false;

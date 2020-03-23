@@ -5,7 +5,7 @@ namespace Sudoku.Functions
         public int Value {get; set;}
         public bool StartedInGrid { get; set; }
 
-        public SudokuCell(int value, bool startedInGrid) {
+        public SudokuCell(int value = 0, bool startedInGrid = false) {
             Value = value;
             StartedInGrid = startedInGrid;
         }

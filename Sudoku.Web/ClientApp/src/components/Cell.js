@@ -1,8 +1,10 @@
-﻿class Cell extends React.Component {
+﻿import React from 'react';
+
+class Cell extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { value: props ?.data ?.value ?? 0};
-        this.startedInGrid = props ?.data ?.startedInGrid ?? false;
+        this.state = { value: props.data.value};
+        this.startedInGrid = props.data.startedInGrid;
     }
 
     render() {
@@ -14,3 +16,5 @@
         }
     }
 }
+
+export default Cell;

@@ -1,9 +1,11 @@
-﻿class Solve extends React.Component {
+﻿import React from 'react';
+
+class Solve extends React.Component {
     constructor(props) {
         super(props);
         this.handleClick = this.handleClick.bind(this);
         this.state = {
-            cells: props ?.cells ?? []
+            cells: props.cells
         }
     }
 
@@ -22,3 +24,5 @@
         return (<button id="solveButton" onClick={this.handleClick}>Solve</button>);
     }
 }
+
+export default Solve;

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Sudoku.Functions;
-using System.Runtime.CompilerServices;
 
 namespace Sudoku.Web.Controllers
 {
@@ -9,25 +9,34 @@ namespace Sudoku.Web.Controllers
         public ISudokuSolver SudokuSolver { get; set; }
         public ISudokuGenerator SudokuGenerator { get; set; }
 
+        public SudokuController(ISudokuSolver sudokuSolver, ISudokuGenerator sudokuGenerator)
+        {
+            SudokuGenerator = sudokuGenerator;
+            SudokuSolver = SudokuSolver;
+        }
+
         [Route("is-solved")]
         [HttpPost]
-        public bool IsSolved([FromBody] SudokuGrid grid)
+        public string IsSolved([FromBody] SudokuGrid grid)
         {
-            return SudokuSolver.IsSolved(grid);
+            var isSolved = SudokuSolver.IsSolved(grid);
+            return JsonConvert.SerializeObject(isSolved);
         }
 
         [Route("solve")]
         [HttpPost]
-        public SudokuGrid Solve([FromBody] SudokuGrid grid)
+        public string Solve([FromBody] SudokuGrid grid)
         {
-            return SudokuSolver.Solve(grid);
+            var solvedGrid = SudokuSolver.Solve(grid).SolvedGrid;
+            return JsonConvert.SerializeObject(solvedGrid);
         }
 
         [Route("create-grid")]
         [HttpGet]
-        public SudokuGrid CreateGrid(GameType gameType)
+        public string CreateGrid(GameType gameType)
         {
-            return SudokuGenerator.GenerateGrid(gameType);
+            var grid = SudokuGenerator.GenerateGrid(gameType).GetGrid();
+            return JsonConvert.SerializeObject(grid);
         }
     }
 }
