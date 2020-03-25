@@ -4,14 +4,14 @@ class Timer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            seconds: parseInt(props.startTimeInSeconds, 10) || 0
+            seconds: parseInt(0, 10)
         };
     }
 
     tick() {
         this.setState(state => ({
             seconds: state.seconds + 1
-        }));
+        }));     
     }
 
     componentDidMount() {
@@ -34,11 +34,14 @@ class Timer extends React.Component {
     }
 
     render() {
+        if (this.props.stop) {
+            clearInterval(this.interval);
+        }
         return (
             <h4>
                 You've been playing for {this.formatTime(this.state.seconds)}
             </h4>
-        );
+        );   
     }
 }
 

@@ -33,6 +33,11 @@ namespace Sudoku.Functions
             }
         }
 
+        public SudokuCell[][] GetCells()
+        {
+            return Grid;
+        }
+
         public SudokuCell GetGridValue(int row, int column) {
             return Grid[row][column];
         }

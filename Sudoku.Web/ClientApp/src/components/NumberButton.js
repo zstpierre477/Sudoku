@@ -3,15 +3,10 @@
 class NumberButton extends React.Component {
     constructor(props) {
         super(props);
-        this.handleClick = this.handleClick.bind(this);
-        this.value = props.value;
-    }
-
-    handleClick() {
     }
 
     render() {
-        return (<button id="numberButton" onClick={this.handleClick}>{this.value}</button>);
+        return (<button class="gridButton" onClick={this.props.setCurrentNumber.bind(this, this.props.value)}>{this.props.value}</button>);
     }
 }
 

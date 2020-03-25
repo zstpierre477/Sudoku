@@ -9,12 +9,20 @@ import SudokuGame from './components/SudokuGame';
 class Start extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { show: true, game: new SudokuGame() }
-        this.handleClick = this.handleClick.bind(this);
+        this.state = {
+            show: true,
+            games: 1
+        }
+        this.handleStartClick = this.handleStartClick.bind(this);
+        this.handleRestartClick = this.handleRestartClick.bind(this);
     }
 
-    handleClick() {
+    handleStartClick() {
         this.setState(({ show: false }))
+    }
+
+    handleRestartClick() {
+        this.setState(({ games: this.state.games+1 }))
     }
 
     render() {
@@ -22,12 +30,19 @@ class Start extends React.Component {
             return (
                 <div>
                     <h1>Welcome to Sudoku!</h1>
-                    <div id="start"><button id="startButton" onClick={this.handleClick}>Start</button></div>
+                    <div id="start"><button id="startButton" onClick={this.handleStartClick}>Start</button></div>
                 </div>
             );
         }
         else {
-            return (this.state.game);
+            return (
+                <div>
+                    <div id="restart"><button id="restartButton" onClick={this.handleRestartClick}>Generate New Puzzle</button></div>
+                    <div key={this.state.games}>
+                        <SudokuGame />
+                    </div> 
+                </div>
+            );
         }
     }
 }

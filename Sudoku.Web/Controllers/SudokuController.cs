@@ -12,26 +12,37 @@ namespace Sudoku.Web.Controllers
         public SudokuController(ISudokuSolver sudokuSolver, ISudokuGenerator sudokuGenerator)
         {
             SudokuGenerator = sudokuGenerator;
-            SudokuSolver = SudokuSolver;
+            SudokuSolver = sudokuSolver;
         }
 
-        [Route("is-solved")]
+        [Route("check")]
         [HttpPost]
-        public string IsSolved([FromBody] SudokuGrid grid)
+        public string CheckIsSolved([FromBody] SudokuCell[][] cells)
         {
-            var isSolved = SudokuSolver.IsSolved(grid);
+            var isSolved = SudokuSolver.IsSolved(new SudokuGrid(cells));
             return JsonConvert.SerializeObject(isSolved);
         }
 
         [Route("solve")]
         [HttpPost]
-        public string Solve([FromBody] SudokuGrid grid)
+        public string Solve([FromBody] SudokuCell[][] cells)
         {
-            var solvedGrid = SudokuSolver.Solve(grid).SolvedGrid;
-            return JsonConvert.SerializeObject(solvedGrid);
+            foreach(var row in cells)
+            {
+                foreach (var column in row)
+                {
+                    if (column.StartedInGrid == false)
+                    {
+                        column.Value = 0;
+                    }
+                }
+            }
+
+            var solvedGrid = SudokuSolver.Solve(new SudokuGrid(cells)).SolvedGrid;
+            return JsonConvert.SerializeObject(solvedGrid.GetCells());
         }
 
-        [Route("create-grid")]
+        [Route("create")]
         [HttpGet]
         public string CreateGrid(GameType gameType)
         {
