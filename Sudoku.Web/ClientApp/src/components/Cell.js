@@ -3,6 +3,7 @@
 class Cell extends React.Component {
     constructor(props) {
         super(props);
+        this.renderCellValues = this.renderCellValues.bind(this);
         this.determineCellBorderingNumber = this.determineCellBorderingNumber.bind(this);
     }
 
@@ -13,13 +14,22 @@ class Cell extends React.Component {
         return "cellBordering" + number;
     }
 
-    render() {
-        if (this.props.Value === 0) {
-            return (<td class={"cell" + this.props.StartedInGrid} id={this.determineCellBorderingNumber()} onClick={this.props.onClick.bind(this, this.props.StartedInGrid, this.props.Position)}><div /></td>);
+    renderCellValues() {
+        if (this.props.Value == 0) {
+            return (
+                <span>
+                    <span id="cellCornerNumbers">{this.props.CornerNumbers}</span>
+                    <span id="cellCenterNumbers">{this.props.CenterNumbers}</span>
+                </span>
+            );
         }
         else {
-            return (<td class={"cell" + this.props.StartedInGrid} id={this.determineCellBorderingNumber()} onClick={this.props.onClick.bind(this, this.props.StartedInGrid, this.props.Position)}><div>{ this.props.Value }</div></td >);
+            return (<span id="cellValue">{this.props.Value}</span>);
         }
+    }
+
+    render() {
+        return (<td class={"cell" + this.props.StartedInGrid} id={this.determineCellBorderingNumber()} onClick={this.props.onClick.bind(this, this.props.StartedInGrid, this.props.Position)}><div>{this.renderCellValues()}</div></td >);
     }
 }
 

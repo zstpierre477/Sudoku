@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 
-class Check extends React.Component {
+class Clear extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -12,4 +12,4 @@ class Check extends React.Component {
     }
 }
 
-export default Check;
+export default Clear;

@@ -17,7 +17,7 @@ namespace Sudoku.Web.Controllers
 
         [Route("check")]
         [HttpPost]
-        public string CheckIsSolved([FromBody] SudokuCell[][] cells)
+        public string CheckIsSolved([FromBody] SudokuCell[][] cells, GameType gameType)
         {
             var isSolved = SudokuSolver.IsSolved(new SudokuGrid(cells));
             return JsonConvert.SerializeObject(isSolved);
@@ -25,7 +25,7 @@ namespace Sudoku.Web.Controllers
 
         [Route("solve")]
         [HttpPost]
-        public string Solve([FromBody] SudokuCell[][] cells)
+        public string Solve([FromBody] SudokuCell[][] cells, GameType gameType)
         {
             foreach(var row in cells)
             {
@@ -43,7 +43,7 @@ namespace Sudoku.Web.Controllers
         }
 
         [Route("create")]
-        [HttpGet]
+        [HttpPost]
         public string CreateGrid(GameType gameType)
         {
             var grid = SudokuGenerator.GenerateGrid(gameType).GetGrid();

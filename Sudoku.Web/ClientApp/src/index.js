@@ -11,14 +11,18 @@ class Start extends React.Component {
         super(props);
         this.state = {
             show: true,
-            games: 1
+            games: 1,
+            gameType: "Sudoku"
         }
         this.handleStartClick = this.handleStartClick.bind(this);
         this.handleRestartClick = this.handleRestartClick.bind(this);
     }
 
     handleStartClick() {
-        this.setState(({ show: false }))
+        this.setState(({
+            show: false,
+            gameType: "Sudoku"
+        }))
     }
 
     handleRestartClick() {
@@ -39,7 +43,7 @@ class Start extends React.Component {
                 <div>
                     <div id="restart"><button id="restartButton" onClick={this.handleRestartClick}>Generate New Puzzle</button></div>
                     <div key={this.state.games}>
-                        <SudokuGame />
+                        <SudokuGame gameType={this.state.gameType} />
                     </div> 
                 </div>
             );

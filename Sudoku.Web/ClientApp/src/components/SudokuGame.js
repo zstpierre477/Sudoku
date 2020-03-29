@@ -6,6 +6,7 @@ import NumberButton from './NumberButton';
 import Cell from './Cell';
 import Clear from './Clear';
 import axios from 'axios';
+import InputTypeButton from './InputTypeButton';
 
 class SudokuGame extends React.Component {
     constructor(props) {
@@ -17,19 +18,27 @@ class SudokuGame extends React.Component {
         this.renderCells = this.renderCells.bind(this);
         this.stopTimer = this.stopTimer.bind(this);
         this.setCurrentNumber = this.setCurrentNumber.bind(this);
-        this.setCellValue = this.setCellValue.bind(this);
+        this.handleCellClick = this.handleCellClick.bind(this);
         this.clearCells = this.clearCells.bind(this);
+        this.setInputType = this.setInputType.bind(this);
         this.state = {
             loading: true,
             cells: [],
             stopTimer: false,
-            currentNumber: 0
+            currentNumber: 0,
+            inputType: "Value",
+            gameType: this.props.gameType
         };
         this.createCells();
     }
     
     createCells() {
-        axios.get('https://localhost:44388/create')
+        axios({
+            method: 'post',
+            url: 'https://localhost:44388/create',
+            data: this.state.gameType,
+            headers: { 'Content-Type': 'application/json' }
+        })
         .then((response) => {
             this.parseDataToCells(response.data);
             this.setState({
@@ -52,7 +61,7 @@ class SudokuGame extends React.Component {
         let cells = [];
         for (let i = 0; i < 9; i++) {
             for (let j = 0; j < 9; j++) {
-                cells.push(<Cell Position={(9*i)+j} Value={data[i][j].Value} StartedInGrid={data[i][j].StartedInGrid} onClick={this.setCellValue} />)
+                cells.push(<Cell Position={(9 * i) + j} CornerNumbers={[]} CenterNumbers={[]} Value={data[i][j].Value} StartedInGrid={data[i][j].StartedInGrid} onClick={this.handleCellClick} />)
             }          
         }
 
@@ -71,7 +80,7 @@ class SudokuGame extends React.Component {
             rows.push(columns);
         }
 
-        return JSON.stringify(rows);
+        return JSON.stringify(rows) + JSON.stringify(this.state.gameType);
     };
 
     renderCells() {
@@ -104,22 +113,66 @@ class SudokuGame extends React.Component {
         });
     }
 
-    setCellValue(startedInGrid, position) {
-        if (startedInGrid == false) {
-            this.setState(prevState => ({
-                cells: prevState.cells.map(
-                    c => c.props.Position === position ? <Cell Position={position} Value={this.state.currentNumber} StartedInGrid={startedInGrid} onClick={this.setCellValue} /> : c
-                )
-            }))
+    handleCellClick(startedInGrid, position) {
+        if (startedInGrid == false && this.state.currentNumber != 0) {
+            if (this.state.inputType == "Value") {
+                this.setState(prevState => ({
+                    cells: prevState.cells.map(
+                        c => c.props.Position != position ? c : <Cell Position={position} StartedInGrid={false} onClick={this.handleCellClick}
+                            CornerNumbers={c.props.CornerNumbers} CenterNumbers={c.props.CenterNumbers} Value={this.state.currentNumber} />
+                    )
+                }))
+            }
+            else {
+                this.setState(prevState => ({
+                    cells: prevState.cells.map(
+                        c => {
+                            if (c.props.Position != position) {
+                                return c;
+                            }
+                            else {
+                                if (this.state.inputType == "Center") {
+                                    if (c.props.CenterNumbers.includes(this.state.currentNumber)) {
+                                        return (<Cell Position={position} StartedInGrid={false} onClick={this.handleCellClick}
+                                            CornerNumbers={c.props.CornerNumbers} Value={c.props.Value}
+                                            CenterNumbers = { c.props.CenterNumbers.filter((value) => { return value != this.state.currentNumber; }) } />);
+                                    }
+                                    else {
+                                        c.props.CenterNumbers.push(this.state.currentNumber);
+                                    }                                  
+                                }
+                                else if (this.state.inputType == "Corner") {
+                                    if (c.props.CornerNumbers.includes(this.state.currentNumber)) {
+                                        return (<Cell Position={position} StartedInGrid={false} onClick={this.handleCellClick}
+                                            CenterNumbers={c.props.CenterNumbers} Value={c.props.Value}
+                                            CornerNumbers={c.props.CornerNumbers.filter((value) => { return value != this.state.currentNumber; })} />);
+                                    }
+                                    else {
+                                        c.props.CornerNumbers.push(this.state.currentNumber);
+                                    }                                   
+                                } 
+                                
+                                return (<Cell Position={position} StartedInGrid={false} onClick={this.handleCellClick}
+                                    CornerNumbers={c.props.CornerNumbers} CenterNumbers={c.props.CenterNumbers} Value={c.props.Value} />);
+                            }
+                        })
+                }))                
+            }         
         }
     }
 
     clearCells() {
         this.setState(prevState => ({
             cells: prevState.cells.map(
-                c => c.props.StartedInGrid ? c : <Cell Position={c.props.Position} Value={0} StartedInGrid={false} onClick={this.setCellValue} />
+                c => c.props.StartedInGrid ? c : <Cell Position={c.props.Position} Value={0} CornerNumbers={[]} CenterNumbers={[]} StartedInGrid={false} onClick={this.handleCellClick} />
             )
         }))
+    }
+
+    setInputType(inputType) {
+        this.setState({
+            inputType: inputType
+        });
     }
 
     render() {
@@ -136,14 +189,17 @@ class SudokuGame extends React.Component {
                     {this.renderCells()}
                     <div id="buttons">
                         <div>
+                            <InputTypeButton inputType={"Value"} onClick={this.setInputType} />
                             {this.renderNumberButtons(3)}
                             <Check convertCellsForPost={this.convertCellsForPost} stopTimer={this.stopTimer} />
                         </div>
                         <div>
+                            <InputTypeButton inputType={"Corner"} onClick={this.setInputType} />
                             {this.renderNumberButtons(6)}
                             <Clear clearCells={this.clearCells} />
                         </div>
                         <div>
+                            <InputTypeButton inputType={"Center"} onClick={this.setInputType} />
                             {this.renderNumberButtons(9)}
                             <Solve onClick={this.parseDataToCells} convertCellsForPost={this.convertCellsForPost} stopTimer={this.stopTimer} />
                         </div>
