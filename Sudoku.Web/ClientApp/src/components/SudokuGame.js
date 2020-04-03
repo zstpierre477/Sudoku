@@ -51,8 +51,8 @@ class SudokuGame extends React.Component {
 
     renderNumberButtons(number) {
         let buttons = [];
-        for (var i = number-3; i < number; i++) {
-            buttons.push(<NumberButton value={i+1} setCurrentNumber={this.setCurrentNumber} />);
+        for (var i = number - 3; i < number; i++) {
+            buttons.push(<NumberButton value={i+1} setCurrentNumber={this.setCurrentNumber} selected={this.state.currentNumber == i+1} />);
         }
         return buttons;
     }
@@ -189,17 +189,17 @@ class SudokuGame extends React.Component {
                     {this.renderCells()}
                     <div id="buttons">
                         <div>
-                            <InputTypeButton inputType={"Value"} onClick={this.setInputType} />
+                            <InputTypeButton inputType={"Value"} onClick={this.setInputType} selected={this.state.inputType == "Value"} />
                             {this.renderNumberButtons(3)}
                             <Check convertCellsForPost={this.convertCellsForPost} stopTimer={this.stopTimer} />
                         </div>
                         <div>
-                            <InputTypeButton inputType={"Corner"} onClick={this.setInputType} />
+                            <InputTypeButton inputType={"Corner"} onClick={this.setInputType} selected={this.state.inputType == "Corner"} />
                             {this.renderNumberButtons(6)}
                             <Clear clearCells={this.clearCells} />
                         </div>
                         <div>
-                            <InputTypeButton inputType={"Center"} onClick={this.setInputType} />
+                            <InputTypeButton inputType={"Center"} onClick={this.setInputType} selected={this.state.inputType == "Center"} />
                             {this.renderNumberButtons(9)}
                             <Solve onClick={this.parseDataToCells} convertCellsForPost={this.convertCellsForPost} stopTimer={this.stopTimer} />
                         </div>

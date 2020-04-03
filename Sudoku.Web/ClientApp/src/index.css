@@ -1,15 +1,17 @@
 table {
     border-collapse: collapse;
-    font-size: xx-large;
-    text-align: center;
     font-weight: bold;
     margin: auto;
     border-collapse: collapse;
+    padding: 0px;
 }
 
 td {
     height: 45px;
     width: 45px;
+    padding: 0px;
+    position: relative;
+    text-align: center;
 }
 
 h1 {
@@ -30,6 +32,20 @@ h4 {
     outline: none;
     color: rgb(0, 0, 0);
     background-color: rgb(255, 255, 255);
+    box-shadow: 0 3px #999;
+    z-index: 0;
+}
+
+.gridButtonSelected {
+    text-align: center;
+    font-weight: bold;
+    border: 1px solid black;
+    width: 55px;
+    height: 45px;
+    cursor: pointer;
+    outline: none;
+    color: rgb(0, 0, 0);
+    background-color: greenyellow;
     box-shadow: 0 3px #999;
     z-index: 0;
 }
@@ -214,4 +230,23 @@ span {
 
 .cellfalse:active {
     background-color: dimgray;
+}
+
+#cellCenterNumbers {
+    font-size: smaller;
+    color: blueviolet;
+    text-align: center;
+}
+
+#cellCornerNumbers {
+    font-size: x-small;
+    color: blueviolet;
+    position: absolute;
+    bottom: 27px;
+    left: 1px;
+}
+
+#cellValue {
+    font-size: xx-large;
+    text-align: center;
 }

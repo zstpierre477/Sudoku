@@ -6,7 +6,12 @@ class NumberButton extends React.Component {
     }
 
     render() {
-        return (<button class="gridButton" onClick={this.props.setCurrentNumber.bind(this, this.props.value)}>{this.props.value}</button>);
+        if (this.props.selected) {
+            return (<button class="gridButtonSelected" onClick={this.props.setCurrentNumber.bind(this, this.props.value)}>{this.props.value}</button>);
+        }
+        else {
+            return (<button class="gridButton" onClick={this.props.setCurrentNumber.bind(this, this.props.value)}>{this.props.value}</button>);
+        }
     }
 }
 

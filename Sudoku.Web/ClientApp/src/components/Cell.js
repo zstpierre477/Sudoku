@@ -17,14 +17,14 @@ class Cell extends React.Component {
     renderCellValues() {
         if (this.props.Value == 0) {
             return (
-                <span>
-                    <span id="cellCornerNumbers">{this.props.CornerNumbers}</span>
-                    <span id="cellCenterNumbers">{this.props.CenterNumbers}</span>
-                </span>
+                <div>
+                    <label id="cellCornerNumbers">{this.props.CornerNumbers}</label>
+                    <label id="cellCenterNumbers">{this.props.CenterNumbers}</label>
+                </div>
             );
         }
         else {
-            return (<span id="cellValue">{this.props.Value}</span>);
+            return (<div class="container"><span id="cellValue">{this.props.Value}</span></div>);
         }
     }
 
