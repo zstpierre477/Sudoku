@@ -7,7 +7,7 @@ class Clear extends React.Component {
 
     render() {       
         return (
-            <button class="gridButton" onClick={this.props.clearCells.bind(this)}>Clear</button>
+            <button class="gridButton" onClick={this.props.clearCells.bind(this)}>Clear All</button>
         );       
     }
 }

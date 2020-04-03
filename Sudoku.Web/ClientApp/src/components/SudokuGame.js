@@ -25,7 +25,7 @@ class SudokuGame extends React.Component {
             loading: true,
             cells: [],
             stopTimer: false,
-            currentNumber: 0,
+            currentNumber: 1,
             inputType: "Value",
             gameType: this.props.gameType
         };
@@ -119,7 +119,7 @@ class SudokuGame extends React.Component {
                 this.setState(prevState => ({
                     cells: prevState.cells.map(
                         c => c.props.Position != position ? c : <Cell Position={position} StartedInGrid={false} onClick={this.handleCellClick}
-                            CornerNumbers={c.props.CornerNumbers} CenterNumbers={c.props.CenterNumbers} Value={this.state.currentNumber} />
+                            CornerNumbers={c.props.CornerNumbers} CenterNumbers={c.props.CenterNumbers} Value={this.state.currentNumber == c.props.Value ? 0 : this.state.currentNumber} />
                     )
                 }))
             }
@@ -139,6 +139,7 @@ class SudokuGame extends React.Component {
                                     }
                                     else {
                                         c.props.CenterNumbers.push(this.state.currentNumber);
+                                        c.props.CenterNumbers.sort(function (a, b) { return a - b });
                                     }                                  
                                 }
                                 else if (this.state.inputType == "Corner") {
@@ -149,6 +150,7 @@ class SudokuGame extends React.Component {
                                     }
                                     else {
                                         c.props.CornerNumbers.push(this.state.currentNumber);
+                                        c.props.CornerNumbers.sort(function (a, b) { return a - b });
                                     }                                   
                                 } 
                                 

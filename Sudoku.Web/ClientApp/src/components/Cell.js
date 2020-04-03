@@ -17,7 +17,7 @@ class Cell extends React.Component {
     renderCellValues() {
         if (this.props.Value == 0) {
             return (
-                <div>
+                <div class="container">
                     <label id="cellCornerNumbers">{this.props.CornerNumbers}</label>
                     <label id="cellCenterNumbers">{this.props.CenterNumbers}</label>
                 </div>
@@ -29,7 +29,7 @@ class Cell extends React.Component {
     }
 
     render() {
-        return (<td class={"cell" + this.props.StartedInGrid} id={this.determineCellBorderingNumber()} onClick={this.props.onClick.bind(this, this.props.StartedInGrid, this.props.Position)}><div>{this.renderCellValues()}</div></td >);
+        return (<td class={"cell" + this.props.StartedInGrid} id={this.determineCellBorderingNumber()} onClick={this.props.onClick.bind(this, this.props.StartedInGrid, this.props.Position)}>{this.renderCellValues()}</td >);
     }
 }
 
