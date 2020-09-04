@@ -18,7 +18,7 @@ class Check extends React.Component {
         let solved = true;
         axios({
             method: 'post',
-            url: 'https://localhost:44395/check',
+            url: 'https://sudoku-zstpierre4.azurewebsites.net/check',
             data: this.props.convertCellsForPost(),
             headers: { 'Content-Type': 'application/json' }
         })
