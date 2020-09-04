@@ -35,7 +35,7 @@ class SudokuGame extends React.Component {
     createCells() {
         axios({
             method: 'post',
-            url: 'httpshttps://sudoku-zstpierre4.azurewebsites.net/create',
+            url: 'https://sudoku-zstpierre4.azurewebsites.net/create',
             data: this.state.gameType,
             headers: { 'Content-Type': 'application/json' }
         })
