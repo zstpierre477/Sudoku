@@ -8,80 +8,99 @@ namespace Sudoku.Functions
             var solves = 0;
             var currentGrid = new SudokuGrid(sudokuGrid);
             var solvedGrid = new SudokuGrid();
-            for (var row = 0; row < 9; row++)
+            var row = 0;
+            var column = 0;
+
+            while (currentGrid.GetGridValue(row, column).StartedInGrid)
             {
-                for (var column = 0; column < 9; column++)
+                if (column < 8)
                 {
-                    var gridValue = currentGrid.GetGridValue(row, column);
-                    if (gridValue.StartedInGrid == false)
+                    column++;
+                }
+                else
+                {
+                    if (row < 8)
                     {
-                        var value = gridValue.Value;
-                        var changed = false;
-                        while (value < 9)
+                        row++;
+                        column = 0;
+                    }
+                    else
+                    {
+                        return new SolvedSudokuGrid(solvedGrid, solves == 1, solves > 0);
+                    }
+                }
+            }
+
+            while (row >= 0 && row < 9)
+            {
+                var gridValue = currentGrid.GetGridValue(row, column);
+                var moveForward = false;
+                if (gridValue.StartedInGrid)
+                {
+                    if (row == 8 && column == 8)
+                    {
+                        solvedGrid = new SudokuGrid(currentGrid);
+                        solves++;
+                        if (solves > 1)
                         {
-                            if (IsValidMove(row, column, value + 1, currentGrid))
-                            {
-                                currentGrid.SetGridValue(row, column, value + 1);                              
-                                if (row == 8 && column == 8)
-                                {
-                                    solvedGrid = new SudokuGrid(currentGrid);
-                                    solves++;
-                                    if (solves > 1)
-                                    {
-                                        return new SolvedSudokuGrid(solvedGrid, solves == 1, solves > 0);
-                                    }
-                                    else
-                                    {
-                                        currentGrid.SetGridValue(row, column, 0);
-                                    }
-                                }
-                                else
-                                {
-                                    changed = true;
-                                    break;
-                                }
-                            }
-                            value++;
+                            return new SolvedSudokuGrid(solvedGrid, solves == 1, solves > 0);
                         }
-                        if (changed == false)
+                    }
+                }
+                else
+                {
+                    var value = gridValue.Value+1;
+                    while (value < 10)
+                    {
+                        if (IsValidMove(row, column, value, currentGrid))
                         {
-                            currentGrid.SetGridValue(row, column, 0);
-                            do
+                            currentGrid.SetGridValue(row, column, value, false);
+                            if (row == 8 && column == 8)
                             {
-                                if (column != 0)
-                                {
-                                    column--;
-                                }
-                                else
-                                {
-                                    if (row != 0)
-                                    {
-                                        row--;
-                                        column = 8;
-                                    }
-                                    else
-                                    {
-                                        return new SolvedSudokuGrid(solvedGrid, solves == 1, solves > 0);
-                                    }
-                                }
-                            } while (currentGrid.GetGridValue(row, column).StartedInGrid);
-                            if (column != 0)
-                            {
-                                column--;
-                            }
-                            else
-                            {
-                                if (row != 0)
-                                {
-                                    row--;
-                                    column = 8;
-                                }
-                                else
+                                solvedGrid = new SudokuGrid(currentGrid);
+                                solves++;
+                                if (solves > 1)
                                 {
                                     return new SolvedSudokuGrid(solvedGrid, solves == 1, solves > 0);
                                 }
                             }
+                            else
+                            {
+                                moveForward = true;
+                                break;
+                            }
                         }
+                        value++;
+                    }
+                }
+
+                if (moveForward)
+                {
+                    if (column < 8)
+                    {
+                        column++;
+                    }
+                    else
+                    {
+                        row++;
+                        column = 0;
+                    }
+                }
+                else
+                {
+                    if (gridValue.StartedInGrid == false)
+                    {
+                        currentGrid.SetGridValue(row, column, 0, false);
+                    }
+
+                    if (column > 0)
+                    {
+                        column--;
+                    }
+                    else
+                    {
+                        row--;
+                        column = 8;
                     }
                 }
             }

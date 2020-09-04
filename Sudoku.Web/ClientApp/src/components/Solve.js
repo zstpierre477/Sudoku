@@ -10,7 +10,7 @@ class Solve extends React.Component {
     handleClick() {
         axios({
             method: 'post',
-            url: 'https://localhost:44388/solve',
+            url: 'https://localhost:44395/solve',
             data: this.props.convertCellsForPost(),
             headers: { 'Content-Type': 'application/json' }
         })
