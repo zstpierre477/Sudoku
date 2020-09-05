@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Shouldly;
 
@@ -24,7 +25,7 @@ namespace Sudoku.Functions.Tests
             var result = SudokuSolver.Solve(grid);
 
             result.Solvable.ShouldBe(false);
-            result.Unique.ShouldBe(false);
+            result.Unique.ShouldBe(true);
             SudokuSolver.IsSolved(result.SolvedGrid).ShouldBe(false);
         }
 
@@ -64,6 +65,33 @@ namespace Sudoku.Functions.Tests
             result.Unique.ShouldBe(true);
             result.Solvable.ShouldBe(true);
             SudokuSolver.IsSolved(result.SolvedGrid).ShouldBe(true);
+        }
+
+        [TestMethod]
+        public void GenerateCandidateValues()
+        {
+            var values = new[] { 1,9,5,6,2,7,3,8,4,
+                8,7,6,4,9,3,2,1,5,
+                4,3,2,5,1,8,7,9,6,
+                6,2,9,3,5,1,8,4,7,
+                3,1,4,8,7,6,9,5,2,
+                7,5,8,9,4,2,1,6,3,
+                2,4,7,1,6,9,5,3,8,
+                9,6,3,7,8,5,0,0,0,
+                5,8,1,2,3,4,0,0,0};
+
+            var cells = GenerateCellGrid(values);
+
+            var grid = new SudokuGrid(cells);
+
+            grid.GenerateCandidateValues();
+
+            grid.GetCandidateValues(7, 6).Count.ShouldBe(1);
+            grid.GetCandidateValues(7, 7).Count.ShouldBe(1);
+            grid.GetCandidateValues(7, 8).Count.ShouldBe(1);
+            grid.GetCandidateValues(8, 6).Count.ShouldBe(1);
+            grid.GetCandidateValues(8, 7).Count.ShouldBe(1);
+            grid.GetCandidateValues(8, 8).Count.ShouldBe(1);
         }
 
         [TestMethod]

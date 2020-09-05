@@ -5,106 +5,51 @@ namespace Sudoku.Functions
     public class SudokuSolver : ISudokuSolver
     {
         public SolvedSudokuGrid Solve(SudokuGrid sudokuGrid) {
-            var solves = 0;
             var currentGrid = new SudokuGrid(sudokuGrid);
-            var solvedGrid = new SudokuGrid();
-            var row = 0;
-            var column = 0;
+            currentGrid.GenerateCandidateValues();
+            return RecursivelySolve(currentGrid, 0, 0);
+        }
 
-            while (currentGrid.GetGridValue(row, column).StartedInGrid)
+        private SolvedSudokuGrid RecursivelySolve(SudokuGrid sudokuGrid, int row, int col)
+        {
+            var currentGrid = new SudokuGrid(sudokuGrid);
+            var gridValue = currentGrid.GetGridValue(row, col);
+            currentGrid.UpdateCandidateValues(row, col, gridValue.Value);
+            var coords = currentGrid.GetSmallestCandidateValuesCellCoordinates();
+
+            var values = currentGrid.GetCandidateValues(coords.Item1, coords.Item2);
+
+            if (values.Count == 0)
             {
-                if (column < 8)
+                if (IsSolved(currentGrid))
                 {
-                    column++;
+                    return new SolvedSudokuGrid(currentGrid, true, true);
                 }
-                else
+                return new SolvedSudokuGrid(currentGrid, true, false);
+            }
+
+            SolvedSudokuGrid previouslySolvedGrid = null;
+            foreach (var value in values.ToList())
+            {
+                currentGrid.SetGridValue(coords.Item1, coords.Item2, value);
+                var solvedGrid = RecursivelySolve(currentGrid, coords.Item1, coords.Item2);
+
+                if (solvedGrid.Solvable && (solvedGrid.Unique == false || previouslySolvedGrid != null))
                 {
-                    if (row < 8)
-                    {
-                        row++;
-                        column = 0;
-                    }
-                    else
-                    {
-                        return new SolvedSudokuGrid(solvedGrid, solves == 1, solves > 0);
-                    }
+                    return new SolvedSudokuGrid(solvedGrid.SolvedGrid, false, true);
+                }
+                if (solvedGrid.Solvable && previouslySolvedGrid == null)
+                {
+                    previouslySolvedGrid = new SolvedSudokuGrid(solvedGrid.SolvedGrid, true, true);
                 }
             }
 
-            while (row >= 0 && row < 9)
+            if (previouslySolvedGrid != null)
             {
-                var gridValue = currentGrid.GetGridValue(row, column);
-                var moveForward = false;
-                if (gridValue.StartedInGrid)
-                {
-                    if (row == 8 && column == 8)
-                    {
-                        solvedGrid = new SudokuGrid(currentGrid);
-                        solves++;
-                        if (solves > 1)
-                        {
-                            return new SolvedSudokuGrid(solvedGrid, solves == 1, solves > 0);
-                        }
-                    }
-                }
-                else
-                {
-                    var value = gridValue.Value+1;
-                    while (value < 10)
-                    {
-                        if (IsValidMove(row, column, value, currentGrid))
-                        {
-                            currentGrid.SetGridValue(row, column, value, false);
-                            if (row == 8 && column == 8)
-                            {
-                                solvedGrid = new SudokuGrid(currentGrid);
-                                solves++;
-                                if (solves > 1)
-                                {
-                                    return new SolvedSudokuGrid(solvedGrid, solves == 1, solves > 0);
-                                }
-                            }
-                            else
-                            {
-                                moveForward = true;
-                                break;
-                            }
-                        }
-                        value++;
-                    }
-                }
-
-                if (moveForward)
-                {
-                    if (column < 8)
-                    {
-                        column++;
-                    }
-                    else
-                    {
-                        row++;
-                        column = 0;
-                    }
-                }
-                else
-                {
-                    if (gridValue.StartedInGrid == false)
-                    {
-                        currentGrid.SetGridValue(row, column, 0, false);
-                    }
-
-                    if (column > 0)
-                    {
-                        column--;
-                    }
-                    else
-                    {
-                        row--;
-                        column = 8;
-                    }
-                }
+                return new SolvedSudokuGrid(previouslySolvedGrid.SolvedGrid, previouslySolvedGrid.Unique, true);
             }
-            return new SolvedSudokuGrid(solvedGrid, solves == 1, solves > 0);
+
+            return new SolvedSudokuGrid(currentGrid, true, false);
         }
 
         public bool IsSolved (SudokuGrid sudokuGrid) {

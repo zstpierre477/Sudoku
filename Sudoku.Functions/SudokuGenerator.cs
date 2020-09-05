@@ -16,15 +16,14 @@ namespace Sudoku.Functions
             var grid = new SudokuGrid();
             var unique = false;
             var count = 0;
-
-            // add 16 free digits to grid since minimum amount of digits needed to solve a grid is 17
             while (true)
             {
-                while (count < 16)
+                while (count < 22)
                 {
                     var row = new Random().Next(0, 9);
                     var column = new Random().Next(0, 9);
                     var value = new Random().Next(1, 10);
+
                     if (grid.GetGridValue(row, column).Value == 0)
                     {
                         if (SudokuSolver.IsValidMove(row, column, value, grid))
@@ -35,11 +34,15 @@ namespace Sudoku.Functions
                     }
                 }
 
-                if (SudokuSolver.Solve(new SudokuGrid(grid)).Solvable)
+                var solvedGrid = SudokuSolver.Solve(new SudokuGrid(grid));
+
+                if (solvedGrid.Solvable)
                 {
                     break;
                 }
+
                 grid = new SudokuGrid();
+                count = 0;
             }
 
             while (unique == false)
@@ -63,8 +66,8 @@ namespace Sudoku.Functions
                         {
                             unique = solvedGrid.Unique;
                         }
-                    }                  
-                }            
+                    }
+                }
             }
 
             return grid;

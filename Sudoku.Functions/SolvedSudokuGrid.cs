@@ -4,7 +4,7 @@
     {
         public SolvedSudokuGrid(SudokuGrid sudokuGrid, bool unique, bool solvable)
         {
-            SolvedGrid = sudokuGrid;
+            SolvedGrid = new SudokuGrid(sudokuGrid);
             Unique = unique;
             Solvable = solvable;
         }
