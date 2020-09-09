@@ -14,7 +14,7 @@ namespace Sudoku.Functions
         public SudokuGrid GenerateGrid(GameType gameType)
         {
             var grid = new SudokuGrid();
-            var unique = false;
+            bool unique;
             var count = 0;
             while (true)
             {
@@ -38,6 +38,7 @@ namespace Sudoku.Functions
 
                 if (solvedGrid.Solvable)
                 {
+                    unique = solvedGrid.Unique;
                     break;
                 }
 
